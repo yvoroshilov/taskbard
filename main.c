@@ -37,10 +37,13 @@ int main(void) {
         exit(EXIT_FAILURE);
     }
 
-//    close(STDIN_FILENO);
-//    close(STDOUT_FILENO);
-//    close(STDERR_FILENO);
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
 
+    writeLog(REGULAR, "**********************");
+    writeLog(REGULAR, "*** DAEMON STARTED ***");
+    writeLog(REGULAR, "**********************");
     int cnt = 0;
     while (1) {
         char number[256];
@@ -48,7 +51,7 @@ int main(void) {
 
         char logStr[256] = "Random string: ";
         const char* f = strcat(logStr, number);
-        writeLog(f);
+        writeLog(REGULAR, f);
 
         if (cnt++ == 10) {
             break;
@@ -56,6 +59,10 @@ int main(void) {
             sleep(3);
         }
     }
+
+    writeLog(REGULAR, "***********************");
+    writeLog(REGULAR, "*** DAEMON FINISHED ***");
+    writeLog(REGULAR, "***********************");
     closeLogger();
     exit(EXIT_SUCCESS);
 }
