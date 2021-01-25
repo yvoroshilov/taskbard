@@ -4,8 +4,13 @@
 #include "logger.h"
 #include "main.h"
 
-#define LOG_FILE_NAME "taskbard.writeLog"
-#define LOG_FILE_PATH "/tmp/"PROGRAM_NAME
+#define LOG_FILE_NAME "taskbard.log"
+#ifndef MINGW_SDK_INIT
+    #define LOG_FILE_PATH "/tmp/"LOG_FILE_NAME
+#else
+    #define LOG_FILE_PATH LOG_FILE_NAME
+#endif
+
 
 FILE* logFile;
 
@@ -25,7 +30,7 @@ const char* formatMsg(const char *msg) {
     timeInfo = localtime ( &rawTime );
 
     char* output = malloc(sizeof(char) * 1000);
-    sprintf(output, "[%d %d %d %d:%d:%d] %s",
+    sprintf(output, "[%d %d %d %d:%d:%d] %s\n",
             timeInfo->tm_mday,
             timeInfo->tm_mon + 1,
             timeInfo->tm_year + 1900,

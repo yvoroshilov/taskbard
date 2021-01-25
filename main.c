@@ -6,9 +6,13 @@
 #include <errno.h>
 #include <unistd.h>
 #include <string.h>
-#include <syslog.h>
 #include "logger.h"
 
+#ifndef MINGW_SDK_INIT
+    #include <syslog.h>
+#else
+    #include "stub.h"
+#endif
 
 int main(void) {
     pid_t pid, sid;
@@ -22,7 +26,6 @@ int main(void) {
     }
     umask(0);
 
-    //writeLog
     initLogger();
 
     sid = setsid();
@@ -34,16 +37,17 @@ int main(void) {
         exit(EXIT_FAILURE);
     }
 
-    close(STDIN_FILENO);
-    close(STDOUT_FILENO);
-    close(STDERR_FILENO);
-
+//    close(STDIN_FILENO);
+//    close(STDOUT_FILENO);
+//    close(STDERR_FILENO);
 
     int cnt = 0;
     while (1) {
         char number[256];
-        sprintf(number, "%ld", cnt);
-        const char* f = strcat("Random string: ", number);
+        sprintf(number, "%d", cnt);
+
+        char logStr[256] = "Random string: ";
+        const char* f = strcat(logStr, number);
         writeLog(f);
 
         if (cnt++ == 10) {
