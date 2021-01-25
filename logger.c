@@ -20,6 +20,7 @@ void initLogger() {
 
 void writeLog(const char *msg) {
     fputs(formatMsg(msg), logFile);
+    fflush(logFile);
 }
 
 const char* formatMsg(const char *msg) {
