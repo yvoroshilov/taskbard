@@ -6,15 +6,13 @@
 #include <errno.h>
 #include <unistd.h>
 #include <string.h>
+#include <syslog.h>
+#include "logger.h"
 
-static const char PROGRAM_NAME[] = "taskbard";
 
 int main(void) {
-
-    /* Our process ID and Session ID */
     pid_t pid, sid;
 
-    /* Fork off the parent process */
     pid = fork();
     if (pid < 0) {
         exit(EXIT_FAILURE);
@@ -24,8 +22,8 @@ int main(void) {
     }
     umask(0);
 
-    //log
-    FILE* file = fopen("/tmp/test", "w+");
+    //writeLog
+    initLogger();
 
     sid = setsid();
     if (sid < 0) {
@@ -41,7 +39,22 @@ int main(void) {
     close(STDERR_FILENO);
 
 
-    fputs("Test", file);
-    fclose(file);
+    int cnt = 0;
+    while (1) {
+        char number[256];
+        sprintf(number, "%ld", cnt);
+        const char* f = strcat("Random string: ", number);
+        writeLog(f);
+
+        if (cnt++ == 10) {
+            break;
+        } else {
+            sleep(3);
+        }
+    }
+    closeLogger();
     exit(EXIT_SUCCESS);
+}
+
+void initLoggers() {
 }
