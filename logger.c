@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "logger.h"
-#include "main.h"
 
 #define LOG_OUTPUT_SIZE 1000
 #define LOG_FILE_NAME "taskbard.log"

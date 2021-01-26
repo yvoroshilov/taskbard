@@ -1,0 +1,4 @@
+#ifndef TASKBARD_UTIL_H
+#define TASKBARD_UTIL_H
+
+#endif //TASKBARD_UTIL_H

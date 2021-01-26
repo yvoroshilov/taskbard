@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "logger.h"
+#include "main.h"
 
 #ifndef MINGW_SDK_INIT
     #include <syslog.h>
@@ -14,8 +15,13 @@
     #include "stub.h"
 #endif
 
-int main(void) {
+struct Configuration configuration = {
+    .tabModuleName = TAB_MODULE_NAME
+};
+
+int main(int argc, char** argv) {
     pid_t pid, sid;
+    parseWindowInfo();
 
     pid = fork();
     if (pid < 0) {
@@ -44,20 +50,12 @@ int main(void) {
     writeLog(REGULAR, "**********************");
     writeLog(REGULAR, "*** DAEMON STARTED ***");
     writeLog(REGULAR, "**********************");
+
+    configure(argc, argv);
     int cnt = 0;
     while (1) {
-        char number[256];
-        sprintf(number, "%d", cnt);
-
-        char logStr[256] = "Random string: ";
-        const char* f = strcat(logStr, number);
-        writeLog(REGULAR, f);
-
-        if (cnt++ == 10) {
-            break;
-        } else {
-            sleep(3);
-        }
+        sleep(3);
+        break;
     }
 
     writeLog(REGULAR, "***********************");
@@ -67,5 +65,6 @@ int main(void) {
     exit(EXIT_SUCCESS);
 }
 
-void initLoggers() {
+void configure(int argc, char** argv) {
+    configuration.barPid = strtoll(argv[0], NULL, 10);
 }
