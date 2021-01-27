@@ -23,16 +23,19 @@ struct WindowDescriptions parseWindowsInfo() {
         struct WindowDescription winDescription;
 
         token = strtok(line, " \t\n");
-        winDescription.wid = token;
+        winDescription.wid = strdup(token);
 
-        token = strtok(line, " \t\n");
-        winDescription.desktopNumber = (int)strtol(token, NULL, 10);
+        token = strtok(NULL, " \t\n");
+        winDescription.desktopNumber = (int)strtol(strdup(token), NULL, 10);
 
-        token = strtok(line, " \t\n");
-        winDescription.resClass = token;
+        token = strtok(NULL, " \t\n");
+        winDescription.resClass = strdup(token);
 
-        token = strtok(line, " \t\n");
-        winDescription.title = token;
+        token = strtok(NULL, " \t\n");
+        winDescription.machineName = strdup(token);
+
+        token = strtok(NULL, " \t\n");
+        winDescription.title = strdup(token);
 
         windowDescriptions.descriptions[wNumber++] = winDescription;
     }

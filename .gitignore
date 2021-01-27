@@ -161,3 +161,6 @@ dkms.conf
 *.out
 *.app
 
+*.vscode
+build
+CMakeFiles
